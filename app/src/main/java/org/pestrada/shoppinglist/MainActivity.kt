@@ -1,7 +1,7 @@
 package org.pestrada.shoppinglist
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import org.pestrada.shoppinglist.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {

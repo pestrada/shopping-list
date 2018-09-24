@@ -16,7 +16,7 @@ import org.pestrada.shoppinglist.ui.list.create.CreateListFragment.OnListFragmen
  * TODO: Replace the implementation with code for your data type.
  */
 class ItemsAdapter(
-        private val mValues: List<Item>,
+        private var mValues: MutableList<Item>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
 
@@ -48,6 +48,11 @@ class ItemsAdapter(
     }
 
     override fun getItemCount(): Int = mValues.size
+
+    fun addItem(item: Item) {
+        mValues.add(item)
+        notifyDataSetChanged()
+    }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: TextView = mView.content

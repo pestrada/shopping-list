@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_create_list.*
+import kotlinx.android.synthetic.main.fragment_create_list.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
 
@@ -37,15 +38,23 @@ class CreateListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_create_list, container, false)
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = ItemsAdapter(mutableListOf(), listener)
+        with(view.list) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
+            }
+            adapter = ItemsAdapter(mutableListOf(), listener)
+        }
+
+        view.itemEditText.setOnClickListener { v ->
+            val item = Item()
+            item.name = itemEditText.text.toString().trim()
+            val adapter = view.list.adapter
+            if (adapter is ItemsAdapter) {
+                adapter.addItem(item)
             }
         }
+
         return view
     }
 

@@ -3,4 +3,5 @@
     <string name="no_shopping_lists_hint">No shopping lists. Let\'s create one!</string>
     <string name="item_name">Item name</string>
     <string name="start_adding_items">Start adding items to your list</string>
+    <string name="save_list">save list</string>
 </resources>

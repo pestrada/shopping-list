@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_create_list.*
 import kotlinx.android.synthetic.main.fragment_create_list.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
@@ -27,6 +28,8 @@ class CreateListFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
 
+    private lateinit var viewModel: ListViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,6 +42,8 @@ class CreateListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_create_list, container, false)
 
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+
         // Set the adapter
         with(view.list) {
             layoutManager = when {
@@ -48,11 +53,17 @@ class CreateListFragment : Fragment() {
             adapter = ItemsAdapter(LinkedList(), listener)
         }
 
+        val adapter = view.list.adapter
+        if (adapter is ItemsAdapter) {
+            subscribeUi(adapter)
+        }
+
         view.itemEditText.setOnEditorActionListener { view, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val item = view.text.toString().trim()
-                if (!item.isEmpty()) {
-                    addItem()
+                val itemName = view.text.toString().trim()
+                if (!itemName.isEmpty()) {
+                    val item = Item(itemName)
+                    viewModel.addItem(item)
                     view.text = ""
                 }
                 true
@@ -64,13 +75,10 @@ class CreateListFragment : Fragment() {
         return view
     }
 
-    private fun addItem() {
-        val item = Item()
-        item.name = itemEditText.text.toString().trim()
-        val adapter = list.adapter
-        if (adapter is ItemsAdapter) {
-            adapter.addItem(item)
-        }
+    private fun subscribeUi(adapter: ItemsAdapter) {
+        viewModel.items.observe(this, Observer { items ->
+            adapter.addItems(items)
+        })
     }
 
     override fun onAttach(context: Context) {

@@ -55,6 +55,11 @@ class ItemsAdapter(
         notifyDataSetChanged()
     }
 
+    fun addItems(items: LinkedList<Item>) {
+        mValues = items
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: TextView = mView.content
 

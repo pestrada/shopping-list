@@ -9,14 +9,15 @@ import kotlinx.android.synthetic.main.fragment_item.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
 import org.pestrada.shoppinglist.ui.list.create.CreateListFragment.OnListFragmentInteractionListener
+import java.util.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Item] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
 class ItemsAdapter(
-        private var mValues: MutableList<Item>,
+        private var mValues: LinkedList<Item>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
 
@@ -50,7 +51,7 @@ class ItemsAdapter(
     override fun getItemCount(): Int = mValues.size
 
     fun addItem(item: Item) {
-        mValues.add(item)
+        mValues.addFirst(item)
         notifyDataSetChanged()
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_create_list.*
 import kotlinx.android.synthetic.main.fragment_create_list.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
+import java.util.*
 
 /**
  * A fragment representing a list of Items.
@@ -43,19 +45,32 @@ class CreateListFragment : Fragment() {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = ItemsAdapter(mutableListOf(), listener)
+            adapter = ItemsAdapter(LinkedList(), listener)
         }
 
-        view.itemEditText.setOnClickListener { v ->
-            val item = Item()
-            item.name = itemEditText.text.toString().trim()
-            val adapter = view.list.adapter
-            if (adapter is ItemsAdapter) {
-                adapter.addItem(item)
+        view.itemEditText.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val item = view.text.toString().trim()
+                if (!item.isEmpty()) {
+                    addItem()
+                    view.text = ""
+                }
+                true
+            } else {
+                false
             }
         }
 
         return view
+    }
+
+    private fun addItem() {
+        val item = Item()
+        item.name = itemEditText.text.toString().trim()
+        val adapter = list.adapter
+        if (adapter is ItemsAdapter) {
+            adapter.addItem(item)
+        }
     }
 
     override fun onAttach(context: Context) {

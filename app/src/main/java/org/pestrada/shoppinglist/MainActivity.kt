@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), CreateListFragment.OnListFragmentInter
     }
 
     override fun onListFragmentInteraction(item: Item) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        
     }
 
 }

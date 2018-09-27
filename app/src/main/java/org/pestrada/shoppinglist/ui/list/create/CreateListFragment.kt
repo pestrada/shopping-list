@@ -62,8 +62,7 @@ class CreateListFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val itemName = view.text.toString().trim()
                 if (!itemName.isEmpty()) {
-                    val item = Item(itemName)
-                    viewModel.addItem(item)
+                    viewModel.addItem(item = Item(itemName))
                     view.text = ""
                 }
                 true
@@ -76,8 +75,8 @@ class CreateListFragment : Fragment() {
     }
 
     private fun subscribeUi(adapter: ItemsAdapter) {
-        viewModel.items.observe(this, Observer { items ->
-            adapter.addItems(items)
+        viewModel.getItemsLiveData().observe(this, Observer { items ->
+            adapter.setItems(items)
         })
     }
 

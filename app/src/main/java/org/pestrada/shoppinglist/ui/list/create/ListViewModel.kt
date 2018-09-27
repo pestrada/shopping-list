@@ -6,11 +6,24 @@ import org.pestrada.shoppinglist.models.Item
 import java.util.*
 
 class ListViewModel : ViewModel() {
-    val items = MutableLiveData<LinkedList<Item>>()
+    private val itemsLiveData = MutableLiveData<List<Item>>()
+
+    init {
+        itemsLiveData.value = LinkedList()
+    }
+
+    private fun itemsList(): LinkedList<Item> = itemsLiveData.value as? LinkedList<Item>
+            ?: LinkedList()
+
+    private fun updateItems(items: List<Item>) {
+        itemsLiveData.value = items
+    }
+
+    fun getItemsLiveData() = itemsLiveData
 
     fun addItem(item: Item) {
-        val newItems: LinkedList<Item> = items.value!!
-        newItems.addFirst(item)
-        items.value = newItems
+        val itemsList = itemsList()
+        itemsList.addFirst(item)
+        updateItems(itemsList)
     }
 }

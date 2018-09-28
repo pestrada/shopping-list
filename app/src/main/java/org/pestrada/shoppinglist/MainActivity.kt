@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), CreateListFragment.OnListFragmentInter
     }
 
     override fun onListFragmentInteraction(item: Item) {
-        
+
     }
 
 }

@@ -1,6 +1,8 @@
 package org.pestrada.shoppinglist.ui.list.create
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -71,6 +73,13 @@ class CreateListFragment : Fragment() {
             }
         }
 
+        view.saveListButton.setOnClickListener { v ->
+            val intent = Intent()
+            intent.putExtra("ShoppingList", viewModel.itemsList)
+            targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, intent)
+            fragmentManager?.popBackStack()
+        }
+
         return view
     }
 
@@ -114,6 +123,7 @@ class CreateListFragment : Fragment() {
 
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
+        const val REQUEST_CODE: Int = 0
 
         // TODO: Customize parameter initialization
         @JvmStatic

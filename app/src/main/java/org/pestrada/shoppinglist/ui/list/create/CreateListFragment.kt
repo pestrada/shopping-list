@@ -1,8 +1,6 @@
 package org.pestrada.shoppinglist.ui.list.create
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_create_list.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
+import org.pestrada.shoppinglist.ui.main.MainViewModel
 import java.util.*
 
 /**
@@ -31,6 +30,7 @@ class CreateListFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
 
     private lateinit var viewModel: ListViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +38,14 @@ class CreateListFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_create_list, container, false)
-
-        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
 
         // Set the adapter
         with(view.list) {
@@ -74,9 +75,7 @@ class CreateListFragment : Fragment() {
         }
 
         view.saveListButton.setOnClickListener { v ->
-            val intent = Intent()
-            intent.putExtra("ShoppingList", viewModel.itemsList)
-            targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, intent)
+            mainViewModel.addShoppingList(viewModel.itemsList)
             fragmentManager?.popBackStack()
         }
 

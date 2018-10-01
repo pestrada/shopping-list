@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_create_list.view.*
 import org.pestrada.shoppinglist.R
 import org.pestrada.shoppinglist.models.Item
+import org.pestrada.shoppinglist.ui.main.MainViewModel
 import java.util.*
 
 /**
@@ -29,6 +30,7 @@ class CreateListFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
 
     private lateinit var viewModel: ListViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +38,14 @@ class CreateListFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_create_list, container, false)
-
-        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
 
         // Set the adapter
         with(view.list) {
@@ -69,6 +72,11 @@ class CreateListFragment : Fragment() {
             } else {
                 false
             }
+        }
+
+        view.saveListButton.setOnClickListener { v ->
+            mainViewModel.addShoppingList(viewModel.itemsList)
+            fragmentManager?.popBackStack()
         }
 
         return view
@@ -114,6 +122,7 @@ class CreateListFragment : Fragment() {
 
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
+        const val REQUEST_CODE: Int = 0
 
         // TODO: Customize parameter initialization
         @JvmStatic

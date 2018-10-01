@@ -8,12 +8,12 @@ import java.util.*
 class ListViewModel : ViewModel() {
     private val itemsLiveData = MutableLiveData<List<Item>>()
 
+    val itemsList: LinkedList<Item>
+        get() = itemsLiveData.value as? LinkedList<Item> ?: LinkedList()
+
     init {
         itemsLiveData.value = LinkedList()
     }
-
-    private fun itemsList(): LinkedList<Item> = itemsLiveData.value as? LinkedList<Item>
-            ?: LinkedList()
 
     private fun updateItems(items: List<Item>) {
         itemsLiveData.value = items
@@ -22,7 +22,7 @@ class ListViewModel : ViewModel() {
     fun getItemsLiveData() = itemsLiveData
 
     fun addItem(item: Item) {
-        val itemsList = itemsList()
+        val itemsList = itemsList
         itemsList.addFirst(item)
         updateItems(itemsList)
     }

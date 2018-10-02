@@ -5,8 +5,10 @@ import org.pestrada.shoppinglist.models.ShoppingList
 class ShoppingListRepository private constructor(private val shoppingListDao: ShoppingListDao) {
     fun getShoppingLists() = shoppingListDao.getAll()
 
-    fun insert(vararg shoppingList: ShoppingList) {
-        shoppingListDao.insertAll(*shoppingList)
+    fun insert(shoppingList: ShoppingList) {
+        AppExecutors.runOnIoThread {
+            shoppingListDao.insertShoppingList(shoppingList)
+        }
     }
 
     companion object {

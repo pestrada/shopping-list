@@ -24,7 +24,7 @@ class MainViewModel(private val repository: ShoppingListRepository) : ViewModel(
     fun getShoppingListLiveData() = shoppingListsLiveData
 
     fun addShoppingList(itemsList: LinkedList<Item>) {
-        val shoppingList = ShoppingList(itemsList = itemsList)
+        val shoppingList = ShoppingList(itemsList)
         val lists = shoppingLists
         lists.add(shoppingList)
         shoppingListsLiveData.value = lists

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.main_fragment.view.*
 import org.pestrada.shoppinglist.R
+import org.pestrada.shoppinglist.data.InjectorUtils
 import org.pestrada.shoppinglist.ui.list.create.CreateListFragment
 import java.util.*
 
@@ -25,7 +26,6 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +34,10 @@ class MainFragment : Fragment() {
         view.listsRecyclerView.layoutManager = LinearLayoutManager(context)
         view.listsRecyclerView.adapter = ListsAdapter(LinkedList())
 
-        viewModel.getShoppingListLiveData().observe(this, Observer { shoppingLists ->
+        val factory = InjectorUtils.provideShoppingListViewModelFactory(context ?: view.context)
+        viewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
+
+        viewModel.getStoredShoppingLists().observe(this, Observer { shoppingLists ->
             val adapter = listsRecyclerView.adapter as? ListsAdapter
             adapter?.setData(shoppingLists)
         })

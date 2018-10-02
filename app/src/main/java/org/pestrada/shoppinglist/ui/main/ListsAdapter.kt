@@ -19,7 +19,7 @@ class ListsAdapter(private var lists: List<ShoppingList>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val list = lists[position]
-        holder.contentView.text = list.timeStamp()
+        holder.contentView.text = list.timeStamp
     }
 
     fun setData(shoppingLists: List<ShoppingList>) {

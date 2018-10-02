@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
         val factory = InjectorUtils.provideShoppingListViewModelFactory(context ?: view.context)
         viewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
 
-        viewModel.getShoppingListLiveData().observe(this, Observer { shoppingLists ->
+        viewModel.getStoredShoppingLists().observe(this, Observer { shoppingLists ->
             val adapter = listsRecyclerView.adapter as? ListsAdapter
             adapter?.setData(shoppingLists)
         })

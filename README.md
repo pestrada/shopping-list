@@ -7,5 +7,6 @@ Using:
 - Fragments
 - Repository pattern
 - Room persistence library
+- WorkManager
 
 ![App screenshot](app-screen-shot.png)

@@ -5,13 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#b8e6f8"
     tools:context=".ui.main.MainFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@android:layout/simple_list_item_1" />
+        android:clipToPadding="false"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/fragment_item" />
 
     <TextView
         android:id="@+id/hintTextView"
